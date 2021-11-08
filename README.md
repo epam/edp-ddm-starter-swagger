@@ -1,1 +1,10 @@
-Starter for Swagger related functionality
+# ddm-starter-swagger
+
+This starter contains custom modifications of Swagger view.
+
+### Usage
+###### Configuration
+List of allowed options to configure:
+* `openapi.request.headers` request headers
+* `openapi.request.gropus` endpoint grouping
+* `openapi.response.codes` possible response codes for different requests
