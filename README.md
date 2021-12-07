@@ -10,4 +10,4 @@ List of allowed options to configure:
 * `openapi.response.codes` possible response codes for different requests
 
 ### License
-soap-api-core is Open Source software released under the Apache 2.0 license.
+ddm-starter-swagger is Open Source software released under the Apache 2.0 license.
