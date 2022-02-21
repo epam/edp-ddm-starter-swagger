@@ -19,13 +19,12 @@ package com.epam.digital.data.platform.starter.swagger.apiresponse.impl;
 import com.epam.digital.data.platform.starter.swagger.config.OpenApiResponseProperties;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.method.HandlerMethod;
 
 @Component
-public class PutPatchApiResponseHandler extends PutApiResponseHandler {
+public class PutUpsertApiResponseHandler extends PutApiResponseHandler {
 
-  public PutPatchApiResponseHandler(
+  public PutUpsertApiResponseHandler(
       MessageSourceAccessor messageSourceAccessor,
       OpenApiResponseProperties openapiResponseProperties) {
     super(messageSourceAccessor, openapiResponseProperties);
@@ -33,13 +32,11 @@ public class PutPatchApiResponseHandler extends PutApiResponseHandler {
 
   @Override
   protected String getDescriptionCode() {
-    return "put";
+    return "put-upsert";
   }
-
+  
   @Override
   public boolean isApplicable(HandlerMethod handlerMethod) {
-    return (super.isApplicable(handlerMethod)
-        || handlerMethod.hasMethodAnnotation(PatchMapping.class))
-        && !isHandlingNestedEntity(handlerMethod);
+    return super.isApplicable(handlerMethod) && isHandlingNestedEntity(handlerMethod);
   }
 }

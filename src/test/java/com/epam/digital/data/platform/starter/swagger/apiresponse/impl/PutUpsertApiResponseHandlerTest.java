@@ -17,6 +17,7 @@
 package com.epam.digital.data.platform.starter.swagger.apiresponse.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.epam.digital.data.platform.starter.swagger.apiresponse.ApiResponseHandler;
@@ -24,22 +25,21 @@ import com.epam.digital.data.platform.starter.swagger.config.OpenApiResponseProp
 import com.epam.digital.data.platform.starter.swagger.utils.MockDefaultController;
 import com.epam.digital.data.platform.starter.swagger.utils.MockNestedController;
 import io.swagger.v3.oas.models.Operation;
+import java.util.Map;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.support.MessageSourceAccessor;
-
-import java.util.Map;
-import java.util.Set;
 import org.springframework.web.method.HandlerMethod;
 
 @ExtendWith(MockitoExtension.class)
-class PutPatchApiResponseHandlerTest {
+class PutUpsertApiResponseHandlerTest {
 
-  private static final String OPERATION_CODE = "put";
-  private static final Set<String> RESPONSE_CODES = Set.of("204", "400", "401", "403", "409", "412", "422", "500", "501");
+  private static final String OPERATION_CODE = "put-upsert";
+  private static final Set<String> RESPONSE_CODES = Set.of("200", "400", "401", "403", "409", "412", "422", "500", "501");
 
   private final MockNestedController mockNestedController = new MockNestedController();
   private final MockDefaultController mockDefaultController = new MockDefaultController();
@@ -54,28 +54,27 @@ class PutPatchApiResponseHandlerTest {
   @BeforeEach
   void beforeEach() {
     apiResponseHandler =
-        new PutPatchApiResponseHandler(messageSourceAccessor, openApiResponseProperties);
+        new PutUpsertApiResponseHandler(messageSourceAccessor, openApiResponseProperties);
   }
 
   @Test
-  void expectIsApplicableWhenAbsentNestedMapping() throws NoSuchMethodException {
+  void expectIsNotApplicableWhenAbsentNestedMapping() throws NoSuchMethodException {
     HandlerMethod handlerMethod = new HandlerMethod(mockDefaultController, "put");
-
-    boolean actual = apiResponseHandler.isApplicable(handlerMethod);
-
-    assertThat(actual).isTrue();
-  }
-
-  @Test
-  void expectIsNotApplicableWhenPresentNestedMapping() throws NoSuchMethodException {
-    HandlerMethod handlerMethod = new HandlerMethod(mockNestedController, "upsert");
 
     boolean actual = apiResponseHandler.isApplicable(handlerMethod);
 
     assertThat(actual).isFalse();
   }
 
-  
+  @Test
+  void expectIsApplicableWhenPresentNestedMapping() throws NoSuchMethodException {
+    HandlerMethod handlerMethod = new HandlerMethod(mockNestedController, "upsert");
+
+    boolean actual = apiResponseHandler.isApplicable(handlerMethod);
+
+    assertThat(actual).isTrue();
+  }
+
   @Test
   void expectNewResponsesAreAddedWhenNoExisting() {
     when(openApiResponseProperties.getCodes())

@@ -16,30 +16,35 @@
 
 package com.epam.digital.data.platform.starter.swagger.apiresponse.impl;
 
+import com.epam.digital.data.platform.starter.swagger.apiresponse.AbstractApiResponseHandler;
 import com.epam.digital.data.platform.starter.swagger.config.OpenApiResponseProperties;
+import java.util.Optional;
 import org.springframework.context.support.MessageSourceAccessor;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.method.HandlerMethod;
 
-@Component
-public class PutPatchApiResponseHandler extends PutApiResponseHandler {
+public abstract class PutApiResponseHandler extends AbstractApiResponseHandler {
+  
+  private static final String NESTED_CONTROLLER_PREFIX = "/nested";
 
-  public PutPatchApiResponseHandler(
+  PutApiResponseHandler(
       MessageSourceAccessor messageSourceAccessor,
       OpenApiResponseProperties openapiResponseProperties) {
     super(messageSourceAccessor, openapiResponseProperties);
   }
 
   @Override
-  protected String getDescriptionCode() {
-    return "put";
+  public boolean isApplicable(HandlerMethod handlerMethod) {
+    return handlerMethod.hasMethodAnnotation(PutMapping.class);
   }
 
-  @Override
-  public boolean isApplicable(HandlerMethod handlerMethod) {
-    return (super.isApplicable(handlerMethod)
-        || handlerMethod.hasMethodAnnotation(PatchMapping.class))
-        && !isHandlingNestedEntity(handlerMethod);
+  protected boolean isHandlingNestedEntity(HandlerMethod handlerMethod) {
+    return Optional.of(handlerMethod.getBeanType())
+        .map(beanClass -> beanClass.getDeclaredAnnotation(RequestMapping.class))
+        .map(RequestMapping::value)
+        .map(requestMappingValue -> requestMappingValue[0])
+        .map(NESTED_CONTROLLER_PREFIX::equals)
+        .orElse(false);
   }
 }
