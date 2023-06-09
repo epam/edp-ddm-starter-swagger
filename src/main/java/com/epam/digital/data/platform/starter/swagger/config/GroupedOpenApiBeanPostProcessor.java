@@ -17,7 +17,6 @@
 package com.epam.digital.data.platform.starter.swagger.config;
 
 import java.util.List;
-import java.util.Map.Entry;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.beans.BeansException;
@@ -40,12 +39,12 @@ public class GroupedOpenApiBeanPostProcessor implements BeanPostProcessor {
 
   @Override
   public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-    Entry<String, List<String>> groupDescription = beanGenerator.getBeanNameToGroup().get(beanName);
+    OpenApiRequestParamProperties.OpenApiGroup groupDescription = beanGenerator.getBeanNameToGroup().get(beanName);
     if (groupDescription != null) {
       var builder = GroupedOpenApi
           .builder()
-          .group(groupDescription.getKey())
-          .pathsToMatch(groupDescription.getValue().toArray(new String[0]));
+          .group(groupDescription.getName())
+          .pathsToMatch(groupDescription.getEndpoints().toArray(new String[0]));
       customizers.forEach(builder::addOperationCustomizer);
       return builder.build();
     }

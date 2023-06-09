@@ -16,19 +16,18 @@
 
 package com.epam.digital.data.platform.starter.swagger.config;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @ConfigurationProperties("openapi.request")
 public class OpenApiRequestParamProperties {
 
   private List<String> headers = new ArrayList<>();
-  private Map<String, List<String>> groups = new HashMap<>();
+  private List<OpenApiGroup> groups = new ArrayList<>();
 
   public List<String> getHeaders() {
     return headers;
@@ -38,11 +37,32 @@ public class OpenApiRequestParamProperties {
     this.headers = headers;
   }
 
-  public Map<String, List<String>> getGroups() {
+  public List<OpenApiGroup> getGroups() {
     return groups;
   }
 
-  public void setGroups(Map<String, List<String>> groups) {
+  public void setGroups(List<OpenApiGroup> groups) {
     this.groups = groups;
+  }
+
+  static class OpenApiGroup {
+    private String name;
+    private List<String> endpoints;
+
+    public String getName() {
+      return name;
+    }
+
+    public void setName(String name) {
+      this.name = name;
+    }
+
+    public List<String> getEndpoints() {
+      return endpoints;
+    }
+
+    public void setEndpoints(List<String> endpoints) {
+      this.endpoints = endpoints;
+    }
   }
 }
