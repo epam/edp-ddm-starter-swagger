@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 EPAM Systems.
+ * Copyright 2023 EPAM Systems.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,6 @@ import java.util.List;
 public class OpenApiRequestParamProperties {
 
   private List<String> headers = new ArrayList<>();
-  private List<OpenApiGroup> groups = new ArrayList<>();
 
   public List<String> getHeaders() {
     return headers;
@@ -35,34 +34,5 @@ public class OpenApiRequestParamProperties {
 
   public void setHeaders(List<String> headers) {
     this.headers = headers;
-  }
-
-  public List<OpenApiGroup> getGroups() {
-    return groups;
-  }
-
-  public void setGroups(List<OpenApiGroup> groups) {
-    this.groups = groups;
-  }
-
-  static class OpenApiGroup {
-    private String name;
-    private List<String> endpoints;
-
-    public String getName() {
-      return name;
-    }
-
-    public void setName(String name) {
-      this.name = name;
-    }
-
-    public List<String> getEndpoints() {
-      return endpoints;
-    }
-
-    public void setEndpoints(List<String> endpoints) {
-      this.endpoints = endpoints;
-    }
   }
 }

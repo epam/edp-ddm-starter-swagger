@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 EPAM Systems.
+ * Copyright 2023 EPAM Systems.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@ package com.epam.digital.data.platform.starter.swagger.customizer;
 import com.epam.digital.data.platform.starter.swagger.apiresponse.ApiResponseHandler;
 import io.swagger.v3.oas.models.Operation;
 import java.util.List;
-import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.customizers.GlobalOperationCustomizer;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 
 @Component
-public class OpenApiResponseCustomizer implements OperationCustomizer {
+public class OpenApiResponseCustomizer implements GlobalOperationCustomizer {
 
   private List<ApiResponseHandler> apiResponseHandlers;
 
